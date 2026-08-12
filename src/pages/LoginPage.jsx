@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [submitting, setSubmitting] = useState(false)
 
   if (isAuthenticated) {
-    return <Navigate to="/organizations" replace />
+    return <Navigate to="/dashboard" replace />
   }
 
   const handleSubmit = async (event) => {
@@ -26,7 +26,10 @@ export default function LoginPage() {
     try {
       await login(email, password)
 
-      const target = location.state?.from?.pathname || '/organizations'
+      // Dashboard is the one landing page every role can reach; sending a
+      // team lead or agent to /organizations would greet them with "not
+      // allowed" straight after logging in.
+      const target = location.state?.from?.pathname || '/dashboard'
       navigate(target, { replace: true })
     } catch (err) {
       setError(errorMessage(err, 'Login failed.'))

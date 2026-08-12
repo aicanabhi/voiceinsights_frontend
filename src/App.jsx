@@ -3,9 +3,16 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 import { ROLES } from './context/AuthContext'
+import AnalysisPage from './pages/AnalysisPage'
 import ChangePasswordPage from './pages/ChangePasswordPage'
+import DashboardPage from './pages/DashboardPage'
 import LoginPage from './pages/LoginPage'
+import MediaDetailPage from './pages/MediaDetailPage'
+import MediaPage from './pages/MediaPage'
+import OrganizationAgentsPage from './pages/OrganizationAgentsPage'
 import OrganizationsPage from './pages/OrganizationsPage'
+import TeamsPage from './pages/TeamsPage'
+import UsersPage from './pages/UsersPage'
 
 export default function App() {
   return (
@@ -19,7 +26,11 @@ export default function App() {
           </ProtectedRoute>
         }
       >
-        <Route index element={<Navigate to="/organizations" replace />} />
+        {/* Every role has a dashboard of its own, so it makes a good home. */}
+        <Route index element={<Navigate to="/dashboard" replace />} />
+
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/analysis" element={<AnalysisPage />} />
 
         <Route
           path="/organizations"
@@ -29,6 +40,32 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* Reading agents is super admin + that organization's org admin;
+            writing is super admin only, enforced inside the page. */}
+        <Route
+          path="/organization-agents"
+          element={
+            <ProtectedRoute roles={[ROLES.SUPER_ADMIN, ROLES.ORG_ADMIN]}>
+              <OrganizationAgentsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* GET /teams/ 403s for an AGENT, so the route is gated to the roles
+            that can actually list them. */}
+        <Route
+          path="/teams"
+          element={
+            <ProtectedRoute roles={[ROLES.SUPER_ADMIN, ROLES.ORG_ADMIN, ROLES.TEAM_LEAD]}>
+              <TeamsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/users" element={<UsersPage />} />
+        <Route path="/media" element={<MediaPage />} />
+        <Route path="/media/:id" element={<MediaDetailPage />} />
 
         <Route path="/change-password" element={<ChangePasswordPage />} />
       </Route>

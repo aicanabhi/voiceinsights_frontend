@@ -22,10 +22,42 @@ export default function Layout() {
         </div>
 
         <nav className="nav">
-          {hasRole(ROLES.SUPER_ADMIN, ROLES.ORG_ADMIN) && (
-            <NavLink to="/organizations" className={navClass}>
-              Organizations
+          <NavLink to="/dashboard" className={navClass}>
+            Dashboard
+          </NavLink>
+
+          <NavLink to="/media" className={navClass}>
+            Recordings
+          </NavLink>
+
+          <NavLink to="/analysis" className={navClass}>
+            Analysis
+          </NavLink>
+
+          {/* Every role can list users -- the API scopes the result, and an
+              agent simply sees only themselves. */}
+          <NavLink to="/users" className={navClass}>
+            Users
+          </NavLink>
+
+          {/* Teams is the exception: it 403s for an agent rather than
+              returning an empty list. */}
+          {hasRole(ROLES.SUPER_ADMIN, ROLES.ORG_ADMIN, ROLES.TEAM_LEAD) && (
+            <NavLink to="/teams" className={navClass}>
+              Teams
             </NavLink>
+          )}
+
+          {hasRole(ROLES.SUPER_ADMIN, ROLES.ORG_ADMIN) && (
+            <>
+              <NavLink to="/organizations" className={navClass}>
+                Organizations
+              </NavLink>
+
+              <NavLink to="/organization-agents" className={navClass}>
+                Agents
+              </NavLink>
+            </>
           )}
 
           <NavLink to="/change-password" className={navClass}>
