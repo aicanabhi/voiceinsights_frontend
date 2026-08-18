@@ -13,6 +13,7 @@ import OrganizationAgentsPage from './pages/OrganizationAgentsPage'
 import OrganizationsPage from './pages/OrganizationsPage'
 import TeamsPage from './pages/TeamsPage'
 import UsersPage from './pages/UsersPage'
+import ReportsPage from './pages/ReportsPage'
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
 
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/analysis" element={<AnalysisPage />} />
+        <Route path="/reports" element={<ReportsPage />} />
 
         <Route
           path="/organizations"

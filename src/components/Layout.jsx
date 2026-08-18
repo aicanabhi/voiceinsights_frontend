@@ -26,6 +26,10 @@ export default function Layout() {
             Dashboard
           </NavLink>
 
+          <NavLink to="/reports" className={navClass}>
+            Reports
+          </NavLink>
+
           <NavLink to="/media" className={navClass}>
             Recordings
           </NavLink>
